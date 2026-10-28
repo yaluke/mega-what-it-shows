@@ -1,0 +1,72 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: yaluke
+status: open
+reviewed: 2026-10-28
+signature: yaluke
+---
+
+<script>
+  import SplitTable from '#lib/kb/SplitTable.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const tickets = {
+    parser: 'https://github.com/yaluke/mega-what-it-shows/issues/1',
+    hint: 'https://github.com/yaluke/mega-what-it-shows/issues/2',
+    'one-day': 'https://github.com/yaluke/mega-what-it-shows/issues/3',
+  };
+</script>
+
+[#4471](/kb/incidents/4471) says "one issue, one fix queued". The reports merged into it say
+otherwise. Grouped by what can actually break a date for that tenant, not by subject line, they
+fall into three problems. Each needs its own fix, so each now has its own ticket.
+
+<Callout kind="warn">
+The queued parser fix closes only the first problem. The other two stay broken after it ships.
+</Callout>
+
+## Where the reports go
+
+<SplitTable ticket={4471} {tickets} />
+
+The export repeats some reports across overlapping pages. Each report is counted once, by id.
+
+## The three problems
+
+**`parser` — the shared parser reads every date month first.** Every tenant on file writes the
+day first, so any day ≤ 12 comes out with day and month swapped: 7 April becomes 4 July. It
+reaches people through the app, email, and the `booking-v2` form. This is the fix that is queued.
+
+**`hint` — `booking-v3` prints `MM/DD/YYYY` under its date field.** Day-first tenants on
+`booking-v3` type what the hint tells them, month first, and the form then reads the date the
+tenant's way. The symptom is the same swap, so subject lines and intake tags cannot tell it from
+`parser`; only the channel and the tenant's form can. Fixing the parser does not touch the hint.
+
+**`one-day` — dates move by exactly one day.** "Invite says Tuesday 12 May. Calendar says Monday
+11 May." "Client in Lisbon got Tuesday. Client in Toronto got Monday." A month-first read cannot
+move a date by one day, so these are not `parser` at all. They point at time zones: a date
+handled as midnight in one zone and shown in another. The desk had already noticed them
+(`desk-notes.json`) but counted them under `parser`.
+
+## How to tell them apart
+
+- Ignore `meta.intakeTag`. It is a guess from the reporter's browser and disagrees with the
+  tenant-based cause on dozens of these reports.
+- Day and month swapped, reported through a `booking-v3` form → `hint`. Any other way in → `parser`.
+- The date moved by one day, or two people saw different weekdays for one meeting → `one-day`,
+  whatever the tenant.
+
+## The old view, for comparison
+
+<CauseTable ticket={4471} />
+
+## Lessons
+
+- Merging on subject ([decision 0001](/kb/decisions/0001-dedupe-by-subject)) put three bugs
+  behind one "known" label. Same symptom is not same cause.
+- A note that says "these look different" belongs in its own group, not in a footnote.
+
+<RenderStamp {signature} />
