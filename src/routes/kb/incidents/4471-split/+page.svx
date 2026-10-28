@@ -25,8 +25,16 @@ otherwise. Grouped by what can actually break a date for that tenant, not by sub
 fall into three problems. Each needs its own fix, so each now has its own ticket.
 
 <Callout kind="warn">
-The queued parser fix closes only the first problem. The other two stay broken after it ships.
+The parser fix closed only the first problem. Dates that move by one day are still broken.
 </Callout>
+
+## Where they stand
+
+Engineering closed #4471 on 5 October:
+
+- `parser` — **fixed** ("fix(dates): parse dd/mm for eu locales"). [#1](https://github.com/yaluke/mega-what-it-shows/issues/1) closed as completed.
+- `hint` — **won't fix**: the `booking-v3` form is retired. [#2](https://github.com/yaluke/mega-what-it-shows/issues/2) closed as not planned.
+- `one-day` — **still open.** Neither outcome touches it: a day-first parse cannot move a date back by one day, and these reports came through the app and email, not the retired form. [#3](https://github.com/yaluke/mega-what-it-shows/issues/3) stays open.
 
 ## Where the reports go
 

@@ -39,7 +39,15 @@
   </header>
   <main>
     <p><a href="/kb/incidents/4471">#4471</a> says "one issue, one fix queued". The reports merged into it say otherwise. Grouped by what can actually break a date for that tenant, not by subject line, they fall into three problems. Each needs its own fix, so each now has its own ticket.</p>
-    <aside class="warn">The queued parser fix closes only the first problem. The other two stay broken after it ships.</aside>
+    <aside class="warn">The parser fix closed only the first problem. Dates that move by one day are still broken.</aside>
+
+    <h2>Where they stand</h2>
+    <p>Engineering closed #4471 on 5 October:</p>
+    <ul>
+      <li><code>parser</code> — <strong>fixed</strong> ("fix(dates): parse dd/mm for eu locales"). <a href="https://github.com/yaluke/mega-what-it-shows/issues/1">#1</a> closed as completed.</li>
+      <li><code>hint</code> — <strong>won't fix</strong>: the <code>booking-v3</code> form is retired. <a href="https://github.com/yaluke/mega-what-it-shows/issues/2">#2</a> closed as not planned.</li>
+      <li><code>one-day</code> — <strong>still open.</strong> Neither outcome touches it: a day-first parse cannot move a date back by one day, and these reports came through the app and email, not the retired form. <a href="https://github.com/yaluke/mega-what-it-shows/issues/3">#3</a> stays open.</li>
+    </ul>
 
     <h2>Where the reports go</h2>
     <p class="sum"><strong>412</strong> reports merged into #4471 (427 rows in the export) · <strong>3</strong> problems</p>
