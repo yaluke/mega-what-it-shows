@@ -4,7 +4,7 @@ title: '#4471 · three problems, not one'
 owner: yaluke
 status: open
 reviewed: 2026-10-28
-signature: yaluke
+signature: v1.eyJzdWIiOiIyMDQwIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMyMjE5ODYsImV4cCI6MTc5MzMwODM4Nn0.7ZDd8i4MbMWk5roU0oCYtPeyr7Jj1zMl4LqCPhE70FM
 ---
 
 <script>
